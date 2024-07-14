@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextjs-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextjs
+  template:
+    metadata:
+      labels:
+        app: nextjs
+    spec:
+      containers:
+        - name: nextjs
+          image: nextjs-kb:latest
+          imagePullPolicy: Never # ローカルイメージを使用するための設定
+          ports:
+            - containerPort: 3000
+          env:
+            - name: BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: nextjs-secrets # シークレットから環境変数を生成
+                  key: BASE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextjs-service
+spec:
+  selector:
+    app: nextjs
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
