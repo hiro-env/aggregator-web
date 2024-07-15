@@ -45,7 +45,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search articles..."
+        placeholder="記事を検索する"
       />
       <SearchButton onClick={handleSearch}>Search</SearchButton>
     </SearchContainer>
