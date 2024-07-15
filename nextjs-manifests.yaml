@@ -19,11 +19,12 @@ spec:
           ports:
             - containerPort: 3000
           env:
-            - name: BASE_URL
+            # クライアントサイドで使用するためNEXT_PUBLIC_プレフィックスを追加していたが、SSRにするため変数名を短略化
+            - name: BASE_URI
               valueFrom:
                 secretKeyRef:
-                  name: nextjs-secrets # シークレットから環境変数を生成
-                  key: BASE_URL
+                  name: nextjs-secrets # シークレットから環境変数を生成する
+                  key: BASE_URI
 ---
 apiVersion: v1
 kind: Service

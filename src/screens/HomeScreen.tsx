@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SearchBar from '../design-system/SearchBar';
 import ArticleList from '../features/ArticleList';
+import { SsrConfig } from '../config/ssrConfig'; 
 
 type Article = {
   title: string;
@@ -15,7 +16,13 @@ const ScreenContainer = styled.div`
   align-items: center;
 `;
 
-const HomeScreen: React.FC = () => {
+type HomeScreenProps = {
+  config: SsrConfig;
+}
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ config }) => {
+  console.log(config.BASE_URI);
+
   const [articles, setArticles] = useState<Article[]>([
     {
       title: "Sample Article 1",
