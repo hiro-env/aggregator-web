@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: nextjs
-          image: nextjs-kb:latest
-          imagePullPolicy: Never # ローカルイメージを使用するための設定
+          image: asia-northeast1-docker.pkg.dev/grpcaggregator/docker-repo/grpc-web:latest # Artifact Registry 本来は環境変数やSecretを利用する方がベター
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
