@@ -30,6 +30,6 @@ export interface QiitaSearchResponse {
 
 export interface ProtobufAny {
   '@type'?: string;
-  [key: string]: { [key: string]: unknown };
+  [key: string]: unknown ;
 }
 
