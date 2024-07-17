@@ -1,14 +1,17 @@
-export async function fetcher<T>(config: {
+import config from '../config/config';
+
+export async function fetcher<T>({ url, method, params }: {
   url: string,
   method: string,
   params?: object,
 }): Promise<T> {
-  const response = await fetch(config.url, {
-    method: config.method,
+  const fullUrl = `${config.API_BASE_URI}${url}`;
+  const response = await fetch(fullUrl, {
+    method,
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(config.params)
+    body: method === 'GET' ? null : JSON.stringify(params)
   });
   if (!response.ok) {
     throw new Error('Network response was not ok');
