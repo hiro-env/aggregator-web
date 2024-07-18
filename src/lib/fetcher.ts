@@ -5,7 +5,13 @@ export async function fetcher<T>({ url, method, params }: {
   method: string,
   params?: object,
 }): Promise<T> {
-  const fullUrl = `${config.API_BASE_URI}${url}`;
+  // クエリパラメータをURLに追加
+  let fullUrl = `${config.API_BASE_URI}${url}`;
+  if (method === 'GET' && params) {
+    const queryString = new URLSearchParams(params as Record<string, string>).toString();
+    fullUrl = `${fullUrl}?${queryString}`;
+  }
+
   const response = await fetch(fullUrl, {
     method,
     headers: {
@@ -13,8 +19,10 @@ export async function fetcher<T>({ url, method, params }: {
     },
     body: method === 'GET' ? null : JSON.stringify(params)
   });
+
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
+  
   return response.json() as Promise<T>;
 }
