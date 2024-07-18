@@ -22,7 +22,6 @@ const SearchButton = styled.button`
   color: white;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
-
   &:hover {
     background-color: #a6e1ff;
   }
@@ -35,19 +34,22 @@ type SearchBarProps = {
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState('');
 
-  const handleSearch = () => {
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
     onSearch(query);
   };
 
   return (
     <SearchContainer>
-      <SearchInput
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="記事を検索する"
-      />
-      <SearchButton onClick={handleSearch}>Search</SearchButton>
+      <form onSubmit={handleSearch}>
+        <SearchInput
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="記事を検索する"
+        />
+        <SearchButton type="submit">Search</SearchButton>
+      </form>
     </SearchContainer>
   );
 };
