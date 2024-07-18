@@ -2,51 +2,54 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SearchBar from '../design-system/SearchBar';
 import ArticleList from '../features/ArticleList';
-import { SsrConfig } from '../config/ssrConfig'; 
-
-type Article = {
-  title: string;
-  author: string;
-  url: string;
-  published_at: string;
-};
+import { useQiitaServiceSearchArticles } from '../api/qiita/protoQiitaProto';
 
 const ScreenContainer = styled.div`
+  display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-type HomeScreenProps = {
-  config: SsrConfig;
-}
+const ContentContainer = styled.div`
+  width: 46%;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ config }) => {
-  console.log(config.BASE_URI);
+const MessageContainer = styled.div`
+  width: 100%;
+  text-align: center;
+`;
 
-  const [articles, setArticles] = useState<Article[]>([
-    {
-      title: "Sample Article 1",
-      author: "Author 1",
-      url: "https://qiita.com",
-      published_at: "2024-07-12"
-    },
-    {
-      title: "Sample Article 2",
-      author: "Author 2",
-      url: "https://qiita.com",
-      published_at: "2024-07-11"
-    }
-  ]);
+const HomeScreen: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
+  const { data, error, isValidating } = useQiitaServiceSearchArticles(
+    { query: searchQuery || '' },
+    { swr: { enabled: searchQuery !== null } }
+  );
 
   const handleSearch = (query: string) => {
-    // 一旦検索ワードをログに出しておく
-    console.log(`検索ワード： ${query}`);
+    setSearchQuery(query);
   };
 
   return (
     <ScreenContainer>
       <SearchBar onSearch={handleSearch} />
-      <ArticleList articles={articles} />
+      <ContentContainer>
+        {searchQuery === null ? (
+          <MessageContainer>検索してください</MessageContainer>
+        ) : isValidating ? (
+          <MessageContainer>記事を読み込み中...</MessageContainer>
+        ) : error ? (
+          <MessageContainer>データの取得に失敗しました。</MessageContainer>
+        ) : data?.articles?.length ? (
+          <ArticleList articles={data.articles} />
+        ) : (
+          <MessageContainer>検索結果がありません</MessageContainer>
+        )}
+      </ContentContainer>
     </ScreenContainer>
   );
 };
