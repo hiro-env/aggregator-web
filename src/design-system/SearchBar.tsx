@@ -29,9 +29,15 @@ const SearchButton = styled.button`
 
 type SearchBarProps = {
   onSearch: (query: string) => void;
+  placeholder?: string;
+  buttonText?: string;
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ 
+  onSearch,
+  placeholder = 'キーワードを入力',
+  buttonText = '検索'
+}) => {
   const [query, setQuery] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
@@ -46,9 +52,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="記事を検索する"
+          placeholder={placeholder}
         />
-        <SearchButton type="submit">Search</SearchButton>
+        <SearchButton type="submit">{buttonText}</SearchButton>
       </form>
     </SearchContainer>
   );
