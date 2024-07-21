@@ -25,6 +25,12 @@ spec:
                 secretKeyRef:
                   name: nextjs-secrets # シークレットから環境変数を生成する
                   key: BASE_URI
+            - name: SENTRY_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: sentry-secrets
+                  key: SENTRY_AUTH_TOKEN
+
 ---
 apiVersion: v1
 kind: Service
