@@ -31,6 +31,10 @@ const HomeScreen: React.FC = () => {
   );
 
   const handleSearch = (query: string) => {
+    if (query.toLowerCase() === 'error') {
+      // Sentryエラーテスト
+      throw new Error("error occurred during search!!!")
+    }
     setSearchQuery(query);
   };
 
