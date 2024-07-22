@@ -26,7 +26,7 @@ export const JapaneseVersion: Story = {
 
 export const EnglishVersion: Story = {
   args: {
-    placeholder: 'Trick or Search',
+    placeholder: 'Type keyword',
     buttonText: 'Search'
   },
 };
